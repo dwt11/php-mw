@@ -1,0 +1,66 @@
+<?php
+if($action=='edit') {
+    $arr = $dsql->GetOne("Select * from `#@__sys_stepselect` where id='$id' ");
+    //$sbjs = " onsubmit=\"alert('该分类是系统内置枚举，不允许修改！'); return false;\" ";
+    //if($arr['issystem']==0) $sbjs = '';
+    ?>
+    <!-- 编辑表单 -->
+    
+    <form action='sys_stepselect.php' method='post' >
+      <INPUT TYPE="hidden" NAME="action" value="edit_save" />
+      <INPUT TYPE="hidden" NAME="id" value="<?php echo $arr['id']; ?>" />
+      <div>类 别 名：
+        <INPUT TYPE="text" NAME="itemname" class="iptxt" style='width:180px' value="<?php echo $arr['itemname']; ?>" <?php if($arr['issystem']==1) echo "readonly='readonly' "; ?> />
+      </div>
+      <div>缓存组名：
+        <INPUT TYPE="text" NAME="egroup" class="iptxt" style='width:180px' value="<?php echo $arr['egroup']; ?>"  <?php if($arr['issystem']==1) echo "readonly='readonly' "; ?> />
+      </div>
+      <div>备&nbsp;&nbsp;&nbsp;&nbsp;注：
+        <INPUT TYPE="text" NAME="description" class="iptxt" style='width:180px' value="<?php echo $arr['description']; ?>" />
+      </div>
+      <div>系统内置枚举的类别名和缓存组名不可以修改!</div>
+      <div>缓存组名必须为英文或数字组合!</div>
+      <div>
+        <INPUT TYPE="submit" value="确定修改" class="np coolbg"/>
+      </div>
+    </form>
+<?php
+} else if($action=='addnew') {
+?>
+    <!-- 新增类别表单 -->
+    <form action='sys_stepselect.php' method='post'>
+      <INPUT TYPE="hidden" NAME="action" value="addnew_save" />
+      <div>类 别 名：
+        <INPUT TYPE="text" NAME="itemname" class="iptxt" style='width:180px' />
+      </div>
+      <div>缓存组名：
+        <INPUT TYPE="text" NAME="egroup" class="iptxt" style='width:180px' />
+      </div>
+      <div>备&nbsp;&nbsp;&nbsp;&nbsp;注：
+        <INPUT TYPE="text" NAME="description" class="iptxt" style='width:180px' />
+      </div>
+      <div>缓存组名必须为英文或数字组合!</div>
+      <div>
+        <INPUT TYPE="submit" value="确定添加" class="np coolbg"/>
+      </div>
+    </form>
+<?php
+} else if($action=='view') {
+      $arr = $dsql->GetOne("Select * from `#@__sys_stepselect` where id='$id' ");
+      
+      ?>
+      <!-- 预览联动表单 -->
+      <div> <b>类别关系：</b>
+        <select name='topvalue' style='width:160px'>
+          <option value='0'>--请选择--</option>
+          <?php 
+          $options=getOptionsList($arr['egroup']);
+          echo $options; ?>
+        </select>
+        <br />
+        <br />
+         </div>
+      <br style='clear:both' />
+<?php
+}
+?>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/config.php" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/data/common.inc.php" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/data/config.cache.inc.php" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/index.php" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/index_body.htm" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/index_body.php" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/login.php" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/main.php" charset="GBK" />
+  </component>
+</project>

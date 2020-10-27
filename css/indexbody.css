@@ -1,0 +1,199 @@
+td {
+	padding:3px 0px 0 3px;
+}
+.title {
+	color:#666600;
+	font-weight:bold;
+}
+.title span {
+	padding-left:3px;
+}
+#addTab {
+	position:absolute;
+	left:455px;
+	top:350px;
+	width:360px;
+	height:200px;
+	z-index:2;
+	background-color:#FFFFFF;
+	border:1px solid #889D8F;
+	padding:0px;
+	display:none;
+	overflow:hidden;
+}
+#editTab {
+	position:absolute;
+	left:455px;
+	top:320px;
+	width:360px;
+	height:350px;
+	z-index:1;
+	background-color:#FFFFFF;
+	border:1px solid #889D8F;
+	padding:0px;
+	display:none;
+}
+.txt {
+	float:left;
+}
+.itemTable {
+	margin-top:8px;
+	background:#CBD8AC;
+}
+#loaddiv {
+	top:0;
+	left:0;
+	background:#cccccc;
+	filter:Alpha(opacity=70);
+	-moz-opacity:0.7;
+	position:absolute;
+	z-index:10000;
+	width:100%;
+	height:100%;
+}
+
+.rightside {
+	width:49%;
+	float:left;
+	margin-right:1%;
+	height:670px;
+	scrollbar-face-color:#ffffff;
+	scrollbar-highlight-color:#919192;
+	scrollbar-shadow-color:#919192;
+	scrollbar-3dlight-color:#ffffff;
+	scrollbar-arrow-color:#919192;
+	scrollbar-track-color:#ffffff;
+	scrollbar-darkshadow-color:#ffffff;
+}
+.column {
+	width:98%;
+	margin-left:1%
+}
+.column1 {
+	width:48%;
+	float:left;
+	margin-left:1%
+}
+.column2 {
+	width:48%;
+	float:right;
+	margin-right:1%
+}
+.placeholder {
+	width:98%;
+	margin-left:1%;
+	background:#f0f0f0;
+	border:1px dashed #ddd;
+}
+.dbox {
+	border:1px solid #DEEAB6;
+	width:100%;
+}
+.dbox dt {
+	height:28px;
+	line-height:28px;
+	font-weight:bold;
+	color:#4D6C2F;
+}
+.dbox dt .l {
+	float:left;
+	padding-left:8px;
+}
+.dbox dt .r {
+	float:right;
+	padding-right:8px;
+}
+.dbox dt.lside {
+	border-bottom:1px solid #CFD7C4;
+	background:url(../images/dlgtitle.gif) repeat-x;
+}
+.dbox dt.rside {
+	border-bottom:1px solid #DEEAB6;
+	background:url(../images/tbg.gif) repeat-x;
+}
+.dbox dd {
+	padding:0px;
+}
+.dbox dd.intable {
+	padding-top:3px;
+}
+#updatetest {
+	padding:6px;
+	padding-left:110px;
+	background:url("../images/ico_spider.gif") no-repeat scroll 10px 15px transparent;
+}
+#quickmenu {
+	width:100%;
+	height:46px;
+	overflow:hidden;
+}
+#quickmenu .icoitem {
+	float:left;
+	height:24px;
+	line-height:24px;
+	margin-top:12px;
+	padding-left:30px;
+	overflow:hidden;
+}
+.dboxtable td.nline {
+	border-bottom:1px dashed #CFD7C4;
+ }
+.dboxtable td {
+	height:38px;
+ }
+.dboxtable1 ul li {
+	float:left;
+	border-bottom:1px dashed #CFD7C4;
+	height:26px;
+	line-height:26px;
+	display:inline;
+	width:48%;
+	text-align:center;
+}
+.biz p {
+	padding:0 15px;
+	line-height:23px;
+}
+.biz img {
+	float:right;
+	margin:40px 15px 0 15px;
+}
+
+/*结合footer 实现底边永远在最下*/
+html, body, #container {
+	height: 100%;
+	margin: 0;
+	padding: 0;
+}
+
+.top { 
+	border-bottom:1px solid #CFD7C4;
+	font-family:Verdana,Geneva,sans-serif;
+	color:#666;
+    width:98%;
+	margin-left:1%;
+	}
+.menu li{
+		PADDING-LEFT: 5px; FLOAT: left; COLOR: #000; liST-STYLE-TYPE: none; TEXT-AliGN: right;margin-left:4px;
+	}
+.menu li.group{
+		PADDING-LEFT: 15px; PADDING-right: 15px; FLOAT: left; COLOR: #000; liST-STYLE-TYPE: none; TEXT-AliGN: right;margin-left:4px;
+	}
+.menu li.red{
+	color:#F00
+		
+		
+	}
+#footer { 
+	border-top:1px solid #CFD7C4;
+	font-family:Verdana,Geneva,sans-serif;
+	color:#666;
+    width:98%;
+	margin-left:1%;}
+#footer {
+	clear: both;
+	position: relative;
+	z-index: 10;
+	height: 20px;
+	margin-top: -30px;
+}

@@ -1,0 +1,171 @@
+<?php
+if(!isset($GLOBALS['_vars'])) $GLOBALS['_vars'] = array(); 
+$fields = array();
+?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
+<title><?php echo $sysFunTitle?></title>
+<script type="text/javascript" src="../include/My97DatePicker/WdatePicker.js"></script>
+<link href="../css/base.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body background="../images/allbg.gif" leftmargin='8' topmargin='8' >
+<table width="98%" border="0" cellpadding="0" cellspacing="1" bgcolor="#ccd9b9" align="center" style="margin-bottom:5px">
+  <tr>
+    <td height="26" background="../images/tbg.gif"><table width="98%" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+          <td align="center"><?php echo $sysFunTitle?></td>
+        </tr>
+      </table></td>
+  </tr>
+</table>
+<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="background:#cfcfcf;">
+  <tr  bgcolor="#EDF9D5" background='../images/tbg.gif'>
+    <td  ><form name="form2" method="get" action="salary_t.php">
+        <input name="keyword" type="text" id="keyword" class="input" value="<?php echo $keyword;?>">
+              
+              <input type="text" name="date" size="14" value="<?php echo $date;?>" readonly="readonly" class="Wdate" onfocus="WdatePicker({skin:'whyGreen',dateFmt:'yyyy-MM'})"/>
+              
+          
+<span id='typeidct'>
+       <?php
+          $depOptions = GetDepOptionList($emp_dep);
+          echo "<select name='emp_dep' id='emp_dep'  >\r\n";
+          echo "<option value='0'>请选择部门...</option>\r\n";
+          echo $depOptions;
+          echo "</select>";
+			?></span> 
+      
+        <input name="imageField" type="submit" value="搜索" class='np coolbg' />
+        注:员工编号 姓名和月份搜索
+      </form></td>
+  </tr>
+</table>
+<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="background:#cfcfcf;margin-top:5px" >
+  <tr>
+    <td height="28" colspan="15"  background='../images/tbg.gif' align="center"> <?php
+$atts = array();
+$atts['tagname'] = 'pagelist';
+ echo $this->refObj->GetPageList($atts,$this->refObj,$fields); 
+?>
+ </td>
+  </tr>
+  <tr bgcolor="#FBFCE2">
+    <td  align="center" style="white-space:nowrap;">员工编号</td>
+    <td align="center">姓名</td>
+       <td align="center">部门</td>
+    <td  align="center">工资日期</td>
+    <td  align="center">基本工资</td>
+<!--    <td  align="center">资金<br>说明</td>
+    <td  align="center">伙食<br>说明</td>
+ -->
+    <td  align="center">考勤</td>
+    <td  align="center">其他添加</td>
+    <td  align="center">其他扣项</td>
+    <td  align="center">应发金额</td>
+<!--    <td  align="center">实发金额</td>
+    <td  align="center">领取日期</td>
+    <td  align="center">领取人</td>
+-->   
+  </tr>
+  <form name="form1">
+    <?php
+$atts = array();
+$atts['tagname'] = 'datalist';
+$blockValue = $this->refObj->GetArcList($atts,$this->refObj,$fields); 
+if(is_array($blockValue)){
+foreach( $blockValue as $key=>$fields )
+{
+ 
+   
+   
+    $bgcolor="#FFffff";
+    ?>
+    <tr   bgcolor='<?php echo $bgcolor?>' onMouseMove="javascript:this.bgColor='#FCFDEE';" onMouseOut="javascript:this.bgColor='<?php echo $bgcolor?>';">
+      <td align="center" ><?php echo GetEmpCodeByEmpId($fields['salary_empid']);?></td>
+      <td align="center"  ><?php echo GetEmpNameById($fields['salary_empid']);?></td>
+        <td  align="left" style='white-space:nowrap; ' ><?php echo GetEmpDepNameByEmpId($fields['salary_empid']);?></td>
+     <td  align="left"  >
+        <?php echo $fields['salary_yf']; ?> </td>
+      <td  align="left"  ><?php echo (double)($fields['salary_jb']);?></td>
+<!--      <td  align="left"  ><?php echo (double)($fields['salary_jj']);?> <br />
+        <?php echo $fields['salary_jjsm']; ?>&nbsp; </td>
+      <td  align="left"  >-<?php echo (double)($fields['salary_hs']);?> <br />
+        <?php echo $fields['salary_hssm']; ?>&nbsp; </td>
+ -->      <td  align="left"  >-<?php echo (double)($fields['salary_kq']);?> </td>
+     <td  align="left"  ><?php echo (double)($fields['salary_qtadd']);?> 
+        </td>
+      <td  align="left"  >-<?php echo (double)($fields['salary_qtsub']);?> 
+         </td>
+         <td  align="left"  > <?php echo (double)($fields['salary_yfmoney']);?></td>
+<!--      <td  align="left"  > <?php echo (double)($fields['salary_sf']);?></td>
+      <td  align="center"  ><?php
+      if ($fields['salary_lqdate']!=null || $fields['salary_lqdate']!="") echo date("Y年m月d日",strtotime($fields['salary_lqdate']));
+       
+       ?></td>
+      <td  align="center"  ><?php echo $fields['salary_lqname']; ?></td>
+-->     
+    </tr>
+    
+    
+    <?php 
+    
+        $salary_jb_total+=(double)($fields['salary_jb']);
+        
+        $salary_jj_total+=(double)($fields['salary_jj']);
+    
+    $salary_hs_total+=(double)($fields['salary_hs']);
+    
+
+$salary_kq_total+=(double)($fields['salary_kq']);
+$salary_qtadd_total+=(double)($fields['salary_qtadd']);
+$salary_qtsub_total+=(double)($fields['salary_qtsub']);
+$salary_yfmoney_total+=(double)($fields['salary_yfmoney']);
+
+
+    
+    
+    
+    
+}
+}?>
+  </form>
+  <tr bgcolor="#ffffff">
+    <td height="28" colspan="4" align="right" ><strong>合计:</strong> </td>
+    <td height="28"  align="left" >
+    
+<strong>    <?php echo (double)($salary_jb_total);?>
+</strong>    </td>
+<!--    <td height="28" bgcolor="#F9FCEF" align="left"  background='../images/tbg.gif'>
+<strong>        <?php echo (double)($salary_jj_total);?>
+</strong>
+    </td>
+    <td height="28" bgcolor="#F9FCEF" align="left"  background='../images/tbg.gif'>
+<strong>        -<?php echo (double)($salary_hs_total);?>
+</strong>
+    </td>
+ -->   <td height="28" align="left" >
+<strong>        -<?php echo (double)($salary_kq_total);?>
+</strong>
+    </td>
+    <td height="28"  align="left">   <strong> <?php echo (double)($salary_qtadd_total);?></strong>
+
+    </td>
+    <td height="28" align="left"  >
+<strong>        <?php echo (double)($salary_qtsub_total);?>
+</strong>
+    </td>
+    <td height="28" align="left" ><strong><?php echo (double)($salary_yfmoney_total);?></strong></td>
+  </tr>
+  <tr>
+    <td height="28" colspan="15" bgcolor="#F9FCEF" align="center"  background='../images/tbg.gif'> <?php
+$atts = array();
+$atts['tagname'] = 'pagelist';
+ echo $this->refObj->GetPageList($atts,$this->refObj,$fields); 
+?>
+ </td>
+  </tr>
+</table>
+</body>
+</html>

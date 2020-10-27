@@ -1,0 +1,180 @@
+<?php
+if(!isset($GLOBALS['_vars'])) $GLOBALS['_vars'] = array(); 
+$fields = array();
+?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
+<title><?php echo $sysFunTitle?></title>
+<script src="../js/jquery.min.js"></script>
+<script src="../js/dedeajax2.js"></script>
+<script src="../js/main.js"></script>
+<script type="text/javascript" src="../include/My97DatePicker/WdatePicker.js"></script>
+
+<script type="text/javascript">
+function delAll(){
+	var qstr=getCheckboxItem("aid");
+	if(qstr=='')
+	{
+		alert('必须选择一个或多个！');
+		return;
+	}
+	location="integral_del.php?dopost=delAll&qstr="+qstr;
+}
+
+
+</script>
+<link href="../css/base.css" rel="stylesheet" type="text/css" />
+</head>
+<body background="../images/allbg.gif" leftmargin='8' topmargin='8' >
+<table width="98%" border="0" cellpadding="0" cellspacing="1" bgcolor="#ccd9b9" align="center" style="margin-bottom:5px">
+  <tr>
+    <td height="26" background="../images/tbg.gif"><table width="98%" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+          <td align="center"><strong><?php echo $sysFunTitle?></strong></td>
+        </tr>
+      </table></td>
+  </tr>
+</table>
+<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="background:#cfcfcf;">
+  <tr  bgcolor="#EDF9D5" background='../images/tbg.gif'>
+    <td  height="28"  background='../images/tbg.gif' width="50" ><?php
+
+if(Test_webRole("integral/integral_add.php")) echo "<div class=\"toolbox\"><a href=\"integral_add.php\" >添加</a></div>";
+     
+ ?></td>
+    <td  ><form name="form2" method="get" action="integral.php">
+        <label><span>员工编号/员工姓名</span>
+          <input name="keyword" type="text" id="keyword"  style="width:100px" value="<?php echo $keyword?>"  class='inputTips'/>
+        </label>
+        <input type="text" name="date" size="14" value="<?php echo $date;?>" readonly="readonly" class="Wdate"    onfocus="WdatePicker({skin:'whyGreen',dateFmt:'yyyy-MM'})"/>
+        <select name="integral_class">
+          <option value="">请选择积分类型</option>
+          
+          
+              <?php for($i=65;$i<74;$i++)
+			   { 
+				   echo "<option value=".strtolower(chr($i))."";
+				   if($integral_class== strtolower(chr($i)) )echo " selected='selected'";
+				   echo ">".strtoupper(chr($i))."积分</option>";
+			   
+			   }?>
+             </select>
+        <span id='typeidct'>
+        <?php
+          $depOptions = GetDepOptionList($emp_dep);
+          echo "<select name='emp_dep' id='emp_dep'  >\r\n";
+          echo "<option value='0'>请选择部门...</option>\r\n";
+          echo $depOptions;
+          echo "</select>";
+			?>
+        </span>
+        <input name="imageField" type="submit" value="搜索" class='np coolbg' />
+      </form></td>
+  </tr>
+</table>
+<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="background:#cfcfcf;margin-top:5px" >
+  <tr>
+    <td height="28" colspan="11"  background='../images/tbg.gif' align="center"> <?php
+$atts = array();
+$atts['tagname'] = 'pagelist';
+ echo $this->refObj->GetPageList($atts,$this->refObj,$fields); 
+?>
+ </td>
+  </tr>
+ <tr>
+    <td height="28" colspan="11"  background='../images/tbg.gif' align="left">
+    <a href="javascript:selAll('aid')" id="selAllBut" class="coolbg">全选</a> &nbsp;&nbsp;
+      <a href="javascript:delAll()" class="coolbg">删除</a></td>
+  </tr>
+  <tr bgcolor="#FBFCE2">
+    <td  align="center"></td>
+    <td  align="center" style="white-space:nowrap;">员工编号</td>
+    <td align="center">姓名</td>
+    <td align="center">部门</td>
+    <td  align="center">积分日期</td>
+    <td  align="center">积分类型</td>
+    <td  align="center">积分分值</td>
+    <td  align="center">备注</td>
+    <td  align="center">适用积分项目</td>
+    <td  align="center">添加日期</td>
+    <td  align="center">操作</td>
+  </tr>
+ 
+
+  <form name="form1">
+    <?php
+$atts = array();
+$atts['tagname'] = 'datalist';
+$blockValue = $this->refObj->GetArcList($atts,$this->refObj,$fields); 
+if(is_array($blockValue)){
+foreach( $blockValue as $key=>$fields )
+{
+ 
+   
+   
+    $bgcolor="#FFffff";
+    ?>
+    <tr   bgcolor='<?php echo $bgcolor?>' onMouseMove="javascript:this.bgColor='#FCFDEE';" onMouseOut="javascript:this.bgColor='<?php echo $bgcolor?>';">
+      <td align="center" ><input name="aid" type="checkbox" id="aid" value="<?php echo $fields['integral_id']; ?>" class="np" /></td>
+      <td align="center" ><?php echo GetEmpCodeByEmpId($fields['integral_empid']);?></td>
+      <td align="center"  ><?php echo GetEmpNameById($fields['integral_empid']);?></td>
+      <td  align="left" style='white-space:nowrap; ' ><?php echo GetEmpDepNameByEmpId($fields['integral_empid']);?></td>
+      <td  align="center"  ><?php  // echo date("Y年m月d日",strtotime($fields['integral_date']));
+       
+       
+       echo $fields['integral_date'];
+       ?></td>
+      <td  align="center" style='white-space:nowrap; ' ><?php 
+     
+        for($i=65;$i<74;$i++)
+			   { 
+				    
+				   if($fields['integral_class']== strtolower(chr($i)) )echo  strtoupper(chr($i))."分";
+			   
+			   } 
+     
+   
+      
+      ?></td>
+      <td  align="center" style='white-space:nowrap; ' ><?php 
+      //if($fields['integral_aors']=="add")echo (double)($fields['integral_fz']);
+      //if($fields['integral_aors']=="sub")echo (double)($fields['integral_fz']);
+      echo (double)($fields['integral_fz']);
+      ?></td>
+      <td  align="center" style='white-space:nowrap; ' ><?php echo $fields['integral_bz'];?></td>
+      <td  align="left"  ><?php echo "".getgz($fields['integral_gzid']);?></td>
+      <td  align="center"  ><?php echo date("Y年m月d日",strtotime($fields['integral_markdate']));?></td>
+      <td  align="center"  ><?php
+
+if(Test_webRole("integral/integral_edit.php")) echo "<a href='integral_edit.php?aid=".$fields['integral_id']."'>编辑</a> ";
+
+if(Test_webRole("integral/integral_del.php")) echo "<a href='javascript:isdel(\"integral_del.php?dopost=del&aid=\",".$fields['integral_id'].");'>删除</a>";
+?></td>
+    </tr>
+    <?php $totalhj+=(double)($fields['integral_fz']);
+}
+}?>
+  </form>
+  <tr bgcolor="#FFffff" >
+    <td height="28" colspan="6" align="right"  ><strong>合计:</strong></td>
+    <td height="28" align="center" ><span style="white-space:nowrap; ">
+      <?php 
+      
+      echo (double)($totalhj);
+      
+      ?>
+      </span></td>
+    <td height="28" colspan="4" align="center" >&nbsp;</td>
+  </tr>
+  <tr>
+    <td height="28" colspan="11" bgcolor="#F9FCEF" align="center"  background='../images/tbg.gif'> <?php
+$atts = array();
+$atts['tagname'] = 'pagelist';
+ echo $this->refObj->GetPageList($atts,$this->refObj,$fields); 
+?>
+ </td>
+  </tr>
+</table>
+</body>
+</html>

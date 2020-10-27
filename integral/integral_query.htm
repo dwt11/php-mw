@@ -1,0 +1,123 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
+<title><?php echo $sysFunTitle?></title>
+<script type="text/javascript" src="../include/My97DatePicker/WdatePicker.js"></script>
+<link href="../css/base.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body background="../images/allbg.gif" leftmargin='8' topmargin='8' >
+
+<table width="98%" border="0" cellpadding="0" cellspacing="1" bgcolor="#ccd9b9" align="center" style="margin-bottom:5px">
+  <tr>
+    <td height="26" background="../images/tbg.gif"><table width="98%" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+          <td align="center"><strong><?php echo $sysFunTitle?></strong></td>
+        </tr>
+      </table></td>
+  </tr>
+</table>
+<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="background:#cfcfcf;">
+  <tr  bgcolor="#EDF9D5" background='../images/tbg.gif'>
+    <td  ><form name="form2" method="get" action="integral_query.php">
+       
+        从
+        <input type='text' value="<?php echo $startdate;?>" name='startdate'  id='startdate' size='14'  readonly='readonly' class='Wdate'  onfocus="var enddate=$dp.$('enddate');WdatePicker({onpicked:function(){pickedFunc();enddate.focus();},dateFmt:'yyyy-MM-dd',maxDate:'#F{$dp.$D(\'enddate\')}'})"/>
+        到
+        <input type='text' value="<?php echo $enddate;?>" name='enddate' id='enddate' size='14'  readonly='readonly' class='Wdate'  onfocus="WdatePicker({dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'startdate\')}',onpicked:pickedFunc})"/>
+        <script language="JavaScript">
+    // 计算两个日期的间隔天数  
+     //   document.all.dateChangDu.value = iDays;
+	function pickedFunc(){
+		  Date.prototype.dateDiff = function(interval,objDate){    
+		//若参数不足或 objDate 不是日期物件则回传 undefined    
+		if(arguments.length<2||objDate.constructor!=Date) return undefined;    
+		  }
+	
+	}
+
+</script>  
+       <?php
+          $depOptions = GetDepOptionList_norole($emp_dep);
+          echo "<select name='emp_dep' id='emp_dep'  >\r\n";
+          echo "<option value='0'>请选择部门...</option>\r\n";
+          echo $depOptions;
+          echo "</select>";
+			?>
+           <select name="integral_class">
+          <option value="">请选择积分类型</option>
+          <?php for($i=65;$i<74;$i++)
+			   { 
+				   echo "<option value=".strtolower(chr($i))."";
+				   if($integral_class== strtolower(chr($i)) )echo " selected='selected'";
+				   echo ">".strtoupper(chr($i))."积分</option>";
+			   
+			   }?></select>
+     <input name="imageField" type="submit" value="统计" class='np coolbg' />
+        注:月份统计
+        &nbsp;&nbsp;&nbsp;&nbsp; 
+        
+               <span class="toolbox"> 
+        
+        <?php $nowdate="";
+        if($startdate==""){
+        $nowdate=date("Y-m-d",time());
+        }else{
+        $nowdate=$startdate;
+        }
+        ?>
+        <a href='<?php echo getMonthUrl($nowdate,-1)?>'>上一月</a> 
+        <a href='<?php echo getMonthUrl($nowdate,1)?>'>下一月</a> 
+        
+        </span>
+      </form></td>
+  </tr>
+</table>
+<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="background:#cfcfcf;margin-top:5px" >
+  <tr bgcolor="#FBFCE2">
+    <td  align="center" style="white-space:nowrap;">员工编号</td>
+    <td align="center">姓名</td>
+    <td  align="center">阶段得分</td>
+    <td  align="center">名次</td>
+    <td  align="center">历史汇总分值</td>
+  </tr>
+ <?php $i=0;?>
+  <form name="form1">
+    {dede:datalist}
+    <?php 
+   
+   $i++;
+    $bgcolor="#FFffff";
+    ?>
+    <tr   bgcolor='<?php echo $bgcolor?>' onMouseMove="javascript:this.bgColor='#FCFDEE';" onMouseOut="javascript:this.bgColor='<?php echo $bgcolor?>';">
+      <td align="center" ><?php echo GetEmpCodeByEmpId($fields['integral_empid']);?></td>
+      <td align="center"  ><?php echo GetEmpNameById($fields['integral_empid']);?></td>
+       <td  align="center"  ><?php echo (double)($fields['totalfz']);?></td>
+<td  align="center" style='white-space:nowrap; ' >
+      
+      
+     <?php echo "第".$i."名";?>
+      
+      
+      </td>
+      <td  align="center" style='white-space:nowrap; ' >
+      
+      
+      <?php echo Getoldempfz($fields['integral_empid']);?>
+      
+      
+      
+      </td>
+     
+    </tr>
+    
+    
+    
+    
+    {/dede:datalist}
+  </form>
+  
+</table>
+</body>
+</html>

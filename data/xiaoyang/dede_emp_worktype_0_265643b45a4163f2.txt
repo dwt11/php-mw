@@ -1,0 +1,16 @@
+INSERT INTO `dede_emp_worktype` VALUES('1','生产类','生产类','0');
+INSERT INTO `dede_emp_worktype` VALUES('2','后勤类','后勤类','0');
+INSERT INTO `dede_emp_worktype` VALUES('3','库房类','库房类','0');
+INSERT INTO `dede_emp_worktype` VALUES('4','维修类','维修类','0');
+INSERT INTO `dede_emp_worktype` VALUES('5','主管','主管','1');
+INSERT INTO `dede_emp_worktype` VALUES('6','员工12','员工','1');
+INSERT INTO `dede_emp_worktype` VALUES('7','组长','组长','1');
+INSERT INTO `dede_emp_worktype` VALUES('8','安检员','安检员','1');
+INSERT INTO `dede_emp_worktype` VALUES('10','验馍员','验馍员','1');
+INSERT INTO `dede_emp_worktype` VALUES('11','车间主任','车间主任','1');
+INSERT INTO `dede_emp_worktype` VALUES('12','主管','主管','4');
+INSERT INTO `dede_emp_worktype` VALUES('13','员工','员工','2');
+INSERT INTO `dede_emp_worktype` VALUES('14','员工','员工','3');
+INSERT INTO `dede_emp_worktype` VALUES('15','其他','杂工 锅炉等','0');
+INSERT INTO `dede_emp_worktype` VALUES('16','员工','员工','15');
+INSERT INTO `dede_emp_worktype` VALUES('17','11','11','0');

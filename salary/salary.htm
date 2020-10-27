@@ -1,0 +1,207 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
+<title><?php echo $sysFunTitle?></title>
+<script src="../js/jquery.min.js"></script>
+<script src="../js/dedeajax2.js"></script>
+<script src="../js/main.js"></script>
+<script type="text/javascript" src="../include/My97DatePicker/WdatePicker.js"></script>
+<link href="../css/base.css" rel="stylesheet" type="text/css" />
+</head>
+<body background="../images/allbg.gif" leftmargin='8' topmargin='8'>
+<table width="98%" border="0" cellpadding="0" cellspacing="1" bgcolor="#ccd9b9" align="center" style="margin-bottom:5px">
+  <tr>
+    <td height="26" background="../images/tbg.gif"><table width="98%" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+          <td align="center"><strong><?php echo $sysFunTitle?></strong></td>
+        </tr>
+      </table></td>
+  </tr>
+</table>
+<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="background:#cfcfcf;">
+  <tr  bgcolor="#EDF9D5" background='../images/tbg.gif'>
+    <td width="60" ><?php
+
+if(Test_webRole("salary/salary_add.php")) echo "<div class=\"toolbox\"><a href=\"salary_add.php\" >添加</a></div>";
+     
+ ?></td>
+    <td  ><form name="form2" method="get" action="salary.php">
+   
+   <label><span>员工编号\员工姓名 </span>
+          <input name='keyword' type='text' id='keyword'   value="<?php echo $keyword;?>"  class='inputTips'/>
+        </label>  
+   
+         
+        从
+        <input type='text' value="<?php echo $startdate;?>" name='startdate'  id='startdate' size='14'  readonly='readonly' class='Wdate'  onfocus="var enddate=$dp.$('enddate');WdatePicker({onpicked:function(){pickedFunc();enddate.focus();},dateFmt:'yyyy-MM-dd',maxDate:'#F{$dp.$D(\'enddate\')}'})"/>
+        到
+        <input type='text' value="<?php echo $enddate;?>" name='enddate' id='enddate' size='14'  readonly='readonly' class='Wdate'  onfocus="WdatePicker({dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'startdate\')}',onpicked:pickedFunc})"/>
+        <script language="JavaScript">
+    // 计算两个日期的间隔天数  
+     //   document.all.dateChangDu.value = iDays;
+	function pickedFunc(){
+		  Date.prototype.dateDiff = function(interval,objDate){    
+		//若参数不足或 objDate 不是日期物件则回传 undefined    
+		if(arguments.length<2||objDate.constructor!=Date) return undefined;    
+		  }
+	
+	}
+
+</script>  
+
+        <span id='typeidct'>
+        <?php
+          $depOptions = GetDepOptionList($emp_dep);
+          echo "<select name='emp_dep' id='emp_dep'  >\r\n";
+          echo "<option value='0'>请选择部门...</option>\r\n";
+          echo $depOptions;
+          echo "</select>";
+			?>
+        </span>
+        <input name="imageField" type="submit" value="搜索" class='np coolbg' />
+       
+        
+        
+        &nbsp;&nbsp;&nbsp;&nbsp; 
+        
+               <span class="toolbox"> 
+        
+        <?php $nowdate="";
+        if($startdate==""){
+        $nowdate=date("Y-m-d",time());
+        }else{
+        $nowdate=$startdate;
+        }
+        ?>
+        <a href='<?php echo getMonthUrl($nowdate,-1)?>'>上一月</a> 
+        <a href='<?php echo getMonthUrl($nowdate,1)?>'>下一月</a> 
+        
+        </span>
+        
+
+      </form></td>
+  </tr>
+</table>
+<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="background:#cfcfcf;margin-top:5px" >
+  <tr>
+    <td height="28" colspan="15"  background='../images/tbg.gif' align="center"> {dede:pagelist/} </td>
+  </tr>
+  <tr bgcolor="#FBFCE2">
+    <td  align="center" style="white-space:nowrap;">员工编号</td>
+    <td align="center">姓名</td>
+    <td align="center">部门</td>
+    <td  align="center">工资日期</td>
+    <td  align="center">基本工资<br>
+      说明</td>
+    <!--    <td  align="center">资金<br>说明</td>
+    <td  align="center">伙食<br>说明</td>
+ -->
+    <td  align="center">考勤<br>
+      说明</td>
+    <td  align="center">其他添加<br>
+      说明</td>
+    <td  align="center">其他扣项<br>
+      说明</td>
+    <td  align="center">添加日期</td>
+    <td  align="center">应发金额</td>
+    <!--    <td  align="center">实发金额</td>
+    <td  align="center">领取日期</td>
+    <td  align="center">领取人</td>
+-->
+    <td  align="center">操作</td>
+  </tr>
+  <form name="form1">
+    {dede:datalist}
+    <?php 
+   
+   
+    $bgcolor="#FFffff";
+    ?>
+    <tr   bgcolor='<?php echo $bgcolor?>' onMouseMove="javascript:this.bgColor='#FCFDEE';" onMouseOut="javascript:this.bgColor='<?php echo $bgcolor?>';">
+      <td align="center" ><?php echo GetEmpCodeByEmpId($fields['salary_empid']);?></td>
+      <td align="center"  ><?php echo GetEmpNameById($fields['salary_empid']);?></td>
+      <td  align="left" style='white-space:nowrap; ' ><?php echo GetEmpDepNameByEmpId($fields['salary_empid']);?></td>
+      <td  align="left"  > {dede:field.salary_yf/} </td>
+      <td  align="left"  ><?php echo (double)($fields['salary_jb']);?> <br />
+        {dede:field.salary_jbsm/}&nbsp; </td>
+      <!--      <td  align="left"  ><?php echo (double)($fields['salary_jj']);?> <br />
+        {dede:field.salary_jjsm/}&nbsp; </td>
+      <td  align="left"  >-<?php echo (double)($fields['salary_hs']);?> <br />
+        {dede:field.salary_hssm/}&nbsp; </td>
+ -->
+      <td  align="left"  >-<?php echo (double)($fields['salary_kq']);?> <br />
+        {dede:field.salary_kqsm/}&nbsp; </td>
+      <td  align="left"  ><?php echo (double)($fields['salary_qtadd']);?> <br />
+        {dede:field.salary_qtaddsm/}&nbsp; </td>
+      <td  align="left"  >-<?php echo (double)($fields['salary_qtsub']);?> <br />
+        {dede:field.salary_qtsubsm/}&nbsp; </td>
+      <td  align="center"  ><?php echo date("Y年m月d日",strtotime($fields['salary_markdate']));?></td>
+      <td  align="left"  ><?php echo (double)($fields['salary_yfmoney']);?></td>
+      <!--      <td  align="left"  > <?php echo (double)($fields['salary_sf']);?></td>
+      <td  align="center"  ><?php
+      if ($fields['salary_lqdate']!=null || $fields['salary_lqdate']!="") echo date("Y年m月d日",strtotime($fields['salary_lqdate']));
+       
+       ?></td>
+      <td  align="center"  >{dede:field.salary_lqname/}</td>
+-->
+      
+      <td  align="center"  >
+    <?php
+
+if(Test_webRole("salary/salary_edit.php")) echo " <a href=\"salary_edit.php?aid=".$fields['salary_id']."\">编辑</a>";
+
+if(Test_webRole("salary/salary_del.php")) echo " <a href='javascript:isdel(\"salary_del.php?aid=\",".$fields['salary_id'].");'>删除</a>";
+     
+ ?>  
+       
+       
+       
+       </td>
+    </tr>
+    <?php 
+    
+        $salary_jb_total+=(double)($fields['salary_jb']);
+        
+        $salary_jj_total+=(double)($fields['salary_jj']);
+    
+    $salary_hs_total+=(double)($fields['salary_hs']);
+    
+
+$salary_kq_total+=(double)($fields['salary_kq']);
+$salary_qtadd_total+=(double)($fields['salary_qtadd']);
+$salary_qtsub_total+=(double)($fields['salary_qtsub']);
+$salary_yfmoney_total+=(double)($fields['salary_yfmoney']);
+
+
+    
+    
+    
+    ?>
+    {/dede:datalist}
+  </form>
+  <tr>
+    <td height="28" colspan="4" align="right"  background='../images/tbg.gif' bgcolor="#F9FCEF"><strong>合计:</strong></td>
+    <td height="28" bgcolor="#F9FCEF" align="left"  background='../images/tbg.gif'><strong> <?php echo (double)($salary_jb_total);?> </strong></td>
+    <!--    <td height="28" bgcolor="#F9FCEF" align="left"  background='../images/tbg.gif'>
+<strong>        <?php echo (double)($salary_jj_total);?>
+</strong>
+    </td>
+    <td height="28" bgcolor="#F9FCEF" align="left"  background='../images/tbg.gif'>
+<strong>        -<?php echo (double)($salary_hs_total);?>
+</strong>
+    </td>
+ -->
+    <td height="28" bgcolor="#F9FCEF" align="left"  background='../images/tbg.gif'><strong> -<?php echo (double)($salary_kq_total);?> </strong></td>
+    <td height="28" bgcolor="#F9FCEF" align="left"  background='../images/tbg.gif'><strong> <?php echo (double)($salary_qtadd_total);?></strong></td>
+    <td height="28" bgcolor="#F9FCEF" align="left"  background='../images/tbg.gif'><strong> <?php echo (double)($salary_qtsub_total);?> </strong></td>
+    <td height="28" align="left"  background='../images/tbg.gif' bgcolor="#F9FCEF">&nbsp;</td>
+    <td height="28" align="left"  background='../images/tbg.gif' bgcolor="#F9FCEF"><strong><?php echo (double)($salary_yfmoney_total);?></strong></td>
+    <td height="28" align="left"  background='../images/tbg.gif' bgcolor="#F9FCEF">&nbsp;</td>
+  </tr>
+  <tr>
+    <td height="28" colspan="15" bgcolor="#F9FCEF" align="center"  background='../images/tbg.gif'> {dede:pagelist/} </td>
+  </tr>
+</table>
+</body>
+</html>

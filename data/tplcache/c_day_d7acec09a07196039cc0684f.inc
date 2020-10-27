@@ -1,0 +1,139 @@
+<?php
+if(!isset($GLOBALS['_vars'])) $GLOBALS['_vars'] = array(); 
+$fields = array();
+?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
+<title><?php echo $sysFunTitle?></title>
+<script type="text/javascript" src="../include/My97DatePicker/WdatePicker.js"></script>
+<link href="../css/base.css" rel="stylesheet" type="text/css" />
+</head>
+<body background="../images/allbg.gif" leftmargin='8' topmargin='8' >
+<table width="98%" border="0" cellpadding="0" cellspacing="1" bgcolor="#ccd9b9" align="center" style="margin-bottom:5px">
+  <tr>
+    <td height="26" background="../images/tbg.gif"><table width="98%" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+          <td align="center"><strong><?php echo $sysFunTitle?></strong></td>
+        </tr>
+      </table></td>
+  </tr>
+</table>
+<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="background:#cfcfcf;">
+  <tr  bgcolor="#EDF9D5" background='../images/tbg.gif'>
+    <td  ><form name="form2" method="get" action="c_day.php">
+        <input name="keyword" type="text" id="keyword" class="input" value="<?php echo $keyword;?>">
+        <?php
+                  if($date==""){
+                  
+                    $nowtime ="";
+                    }
+                    else
+                    
+                    {
+                    $nowtime =$date;
+                    }
+                    
+                    
+                          ?>
+        <input type="text" name="date" size="14" value="<?php echo $nowtime;?>" readonly="readonly" class="Wdate"  onChange='ChangePage2(this)'  onfocus="WdatePicker({skin:'whyGreen',dateFmt:'yyyy-MM'})"/>
+        <span id='typeidct'>
+        <?php
+          $depOptions = GetDepOptionList($emp_dep);
+          echo "<select name='emp_dep' id='emp_dep'  >\r\n";
+          echo "<option value='0'>请选择部门...</option>\r\n";
+          echo $depOptions;
+          echo "</select>";
+			?>
+        </span>
+        <input name="imageField" type="submit" value="搜索" class='np coolbg' />
+        注:员工编号 姓名和月份搜索  &nbsp;&nbsp;&nbsp;
+         
+      </form></td>
+  </tr>
+</table>
+<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="background:#cfcfcf;margin-top:5px" >
+  <tr>
+    <td height="28" colspan="34"  background='../images/tbg.gif' align="center"> <?php
+$atts = array();
+$atts['tagname'] = 'pagelist';
+ echo $this->refObj->GetPageList($atts,$this->refObj,$fields); 
+?>
+ </td>
+  </tr>
+  <tr bgcolor="#FBFCE2">
+    <td  align="center" style="white-space:nowrap;">员工编号</td>
+    <td align="center">姓名</td>
+    <td align="center">部门</td>
+    <?php
+     for($i=1; $i < $maxday+1; $i++)
+    {
+	  echo "<td align='center'  style='white-space:nowrap; '>".$i."号</td>";
+    }
+    ?>
+  </tr>
+  <?php
+$atts = array();
+$atts['tagname'] = 'datalist';
+$blockValue = $this->refObj->GetArcList($atts,$this->refObj,$fields); 
+if(is_array($blockValue)){
+foreach( $blockValue as $key=>$fields )
+{
+ 
+   
+   
+    $bgcolor="#FFffff";
+    ?>
+  <tr   bgcolor='<?php echo $bgcolor?>' onMouseMove="javascript:this.bgColor='#FCFDEE';" onMouseOut="javascript:this.bgColor='<?php echo $bgcolor?>';">
+    <td align="center"  style='white-space:nowrap; ' ><?php echo GetIntAddZero($fields['kq_hw_empcode']);?></td>
+    <td align="center"   style='white-space:nowrap; ' ><?php echo GetEmpNameByCode($fields['kq_hw_empcode']);?></td>
+    <td  align="left" style='white-space:nowrap; ' ><?php echo GetEmpDepNameByEmpCode($fields['kq_hw_empcode']);?></td>
+    <?php
+     //
+     for($i=1; $i <$maxday+1; $i++)
+    {
+	  echo "<td align='center'  style='white-space:nowrap; ' >";
+      $dateQuery=date("Y-m-d", strtotime($date."-".$i));
+      
+     $query = " SELECT
+              count(kq_id)  numb
+                FROM `#@__checkin` where  kq_hw_empcode='".$fields['kq_hw_empcode']."' and date_format(kq_hw_emptime, '%Y-%m-%d') = '".$dateQuery."'";
+     //dump($query);
+     $row1 = $dsql->GetOne($query);
+      
+      
+      $kqnumb= $row1['numb'] ;
+      if($kqnumb!=0)       echo "<a href='c_list.php?keyword=".GetEmpNameByCode($fields['kq_hw_empcode'])."&date=$dateQuery'>$kqnumb</a> ";
+     
+      
+      
+  
+      
+      
+      
+      
+      
+      
+      
+        echo"</td>";
+      
+      
+    }
+     ?>
+  </tr>
+  <?php
+}
+}?>
+  
+  
+  <tr>
+    <td height="28" colspan="34" bgcolor="#F9FCEF" align="center"  background='../images/tbg.gif'> <?php
+$atts = array();
+$atts['tagname'] = 'pagelist';
+ echo $this->refObj->GetPageList($atts,$this->refObj,$fields); 
+?>
+ </td>
+  </tr>
+</table>
+</body>
+</html>

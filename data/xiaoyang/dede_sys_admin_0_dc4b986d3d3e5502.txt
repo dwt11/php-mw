@@ -1,0 +1,3 @@
+INSERT INTO `dede_sys_admin` VALUES('1','10','admin','c3949ba59abbe56e057f','1411771302','127.0.0.1','10','45');
+INSERT INTO `dede_sys_admin` VALUES('9','1,2,3,4','333','bbf4cce62f762a2aaa14','1411604073','127.0.0.1','76','6');
+INSERT INTO `dede_sys_admin` VALUES('18','10','1111','e9d279d34fa1dfd71aad','0','','156','0');

@@ -1,0 +1,4 @@
+INSERT INTO `dede_sys_stepselect` VALUES('6','教育程度','education','1','1','员工管理');
+INSERT INTO `dede_sys_stepselect` VALUES('9','婚姻','marital','1','1','');
+INSERT INTO `dede_sys_stepselect` VALUES('12','系统缓存标识','system','1','1','');
+INSERT INTO `dede_sys_stepselect` VALUES('13','1122','11','0','0','11');

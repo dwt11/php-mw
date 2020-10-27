@@ -1,0 +1,1 @@
+INSERT INTO `dede_checkin_config` VALUES('1','1','5','30','10','20','30','0','0','од╪╬');

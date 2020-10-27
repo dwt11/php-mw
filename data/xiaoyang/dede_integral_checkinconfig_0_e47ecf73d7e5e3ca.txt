@@ -1,0 +1,1 @@
+INSERT INTO `dede_integral_checkinconfig` VALUES('1','5.00','6.00','7.00','5.00','6.00','7.00','15.00','30.00');

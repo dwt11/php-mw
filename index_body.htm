@@ -1,0 +1,179 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
+<title>后台欢迎页</title>
+<base target="_self">
+<link rel="stylesheet" type="text/css" href="css/base.css" />
+<link rel="stylesheet" type="text/css" href="css/indexbody.css" />
+<script src="../js/jquery.min.js"></script>
+<script src="../js/dedeajax2.js"></script>
+<script src="../js/main.js"></script>
+<script  src="js/indexbody.js"></script>
+</head>
+<body  bgcolor="#FFFFFF">
+<div id="container">
+  <div  class="top" > &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>欢迎使用 <?php echo $cfg_softname; ?></strong> </div>
+  <div class="column"><!--快捷开始-->
+    
+    <dl class="dbox" >
+      <dt class='lside'><span class='l'>快捷操作</span></dt>
+      <dd>
+        <table width="98%" class="dboxtable" align="center">
+          <?php
+          
+           
+$key=0;
+$allNum = count($parents);
+foreach ($parents as $parent)
+{
+	$class= "class=\"nline\" ";
+    $key++;
+    if(($key)==$allNum)$class= "";
+    echo " <tr><td width=\"10%\" $class style=\"text-align:right\"><strong>".$parent.":</strong></td>";
+	echo "<td width=\"90%\" $class style=\"text-align:left\"><div class=\"menu\">".$childs["$parent"]."</div></td></tr>";
+}
+?>
+        </table>
+      </dd>
+    </dl>
+  </div>
+  <!--快捷结束-->
+  <div class="column1"><!--左侧开始-->
+ 
+ 
+ <?php  
+ 
+require_once("include/schedule.class.php");
+$sc = new schedule();
+$totalNumb=$sc->totalNumb;
+if($totalNumb>0){ 
+ ?>
+    <dl class='dbox' >
+      <dt class='lside'>
+        <div class='l'>待办事项</div>
+        <div class='r'></div>
+      </dt>
+      <dd id='listNews'>
+        <table width="100%" class="dboxtable">
+<?php 
+
+$urlsstr=$sc->urlsstr;   //未读连接地址
+echo $urlsstr;
+
+?>        </table>
+      </dd>
+    </dl>
+    <!--待办事项结束-->
+    
+    <?php }?>
+    
+    <dl class='dbox' >
+      <dt class='lside'>
+        <div class='l'>其他链接</div>
+        <div class='r'><a href='#' onClick="AddNew()"><b>【新增】</b></a><a href='#' onClick="ListAll()"><b>【管理】</b></a></div>
+      </dt>
+      <dd>
+        <div id='quickmenu'>
+          <?php
+                        $dtp = new DedeTagparse();
+                        $dtp->SetNameSpace('menu','<','>');
+                        $dtp->LoadTemplet($myQuickMenu);
+                        if(is_array($dtp->CTags)){
+                            foreach($dtp->CTags as $ctag){
+                                $title = $ctag->GetAtt('title');
+                                $ico = $ctag->GetAtt('ico');
+                                $link = $ctag->GetAtt('link');
+                                echo "<div class='icoitem' style='background:url($ico) 10px 3px no-repeat;'><a href='{$link}' target=\"_blank\">{$title}</a></div>\r\n";
+                            }
+                        }
+                    ?>
+        </div>
+      </dd>
+    </dl>
+    <!--快捷操作结束--> 
+  </div>
+  <!--左侧结束-->
+  <div class="column2" ><!--右侧开始-->
+    
+    <dl class="dbox" >
+      <dt class='lside'>
+        <div class='l'>系统信息</div>
+      </dt>
+      <dd class='intable'>
+        <table width="98%" class="dboxtable" align="center">
+          <tr>
+            <td width="25%" class='nline' style="text-align:right">姓名：</td>
+            <td class='nline'><?php
+                                   echo $realName." (".$userName.") ";
+
+                        ?></td>
+          </tr>
+          <tr>
+            <td width="25%" class='nline' style="text-align:right">部门：</td>
+            <td class='nline'><?php echo $depAllName?></td>
+          </tr>
+          <?php 
+     if(file_exists(DEDEPATH.'/emp'))
+      {//如果系统有EMP的功能,则上面的部门输出的是部门数据
+       //如果没有,则上面输出权限数据,这里就不用了
+     ?>
+          <tr>
+            <td width="25%" class='nline' style="text-align:right">所属权限组：</td>
+            <td class='nline'><?php echo $groupNames;?></td>
+          </tr>
+          <?php }?>
+          <tr>
+            <td width="25%" class='nline' style="text-align:right">登录次数：</td>
+            <td class='nline'><?php echo $loginNumb;?></td>
+          </tr>
+          <tr>
+            <td width="25%" class='' style="text-align:right">上次登录：</td>
+            <td class=''><?php echo $loginTime." (".$loginIp.") ";?></td>
+          </tr>
+        </table>
+      </dd>
+    </dl>
+    <!--系统基本信息结束--> 
+    
+  </div>
+  <!--右侧结束--> 
+  
+</div>
+<!-- //底部 -->
+<div align="center" id="footer" ><?php echo $cfg_powerby; ?>&nbsp;&nbsp;&nbsp;&nbsp;  </div>
+
+<!--  下面是隐藏的项目  -->
+<div id="editTab"> <span id='editTabBody'>请稍候，正在载入...</span> </div>
+<div id="addTab">
+  <form name='addform' action='index_body.php'>
+    <input type='hidden' name='dopost' value='addnew' />
+    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <td height='28' colspan='3' background="images/tbg.gif"><div style='float:left'><b>增加快捷操作项</b></div>
+          <div style='float:right;padding:3px 10px 0 0;'> <a href="javascript:CloseTab('addTab')"><strong>关闭</strong></a> </div></td>
+      </tr>
+      <tr>
+        <td style="height:6px;font-size:1px;border-top:1px solid #8DA659" colspan="2">&nbsp;</td>
+      </tr>
+      <tr>
+        <td width="20%" height="28" align="right">链接标题：</td>
+        <td width="70%"><input name="title" type="text" id="title" class='pubinputs' style="width:255px;"/></td>
+      </tr>
+      <tr>
+        <td height="28" width="20%" align="right">ICO图片：</td>
+        <td width="70%"><input name="ico" type="text" id="ico" class='pubinputs' style="width:255px;"/></td>
+      </tr>
+      <tr>
+        <td height="28" width="20%" align="right">链接网址：</td>
+        <td width="70%"><input name="link" type="text" id="link" class='pubinputs' style="width:255px;"/></td>
+      </tr>
+      <tr>
+        <td height="45">&nbsp;</td>
+        <td><input type="submit" name="Submit" value="保存项目" class="np coolbg" style="width:80px;cursor:pointer" /></td>
+      </tr>
+    </table>
+  </form>
+</div>
+</body>
+</html>
